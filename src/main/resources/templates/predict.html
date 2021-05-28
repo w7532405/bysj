@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: head(~{::title})">
+    <title>疫情预测</title>
+</head>
+<body class="antialiased">
+<div class="page">
+    <header th:replace="fragments :: header(3)"></header>
+
+    <div class="content">
+        <div class="container-xl">
+            <!-- Page title -->
+            <div class="page-header d-print-none">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <!-- Page pre-title -->
+                        <div class="page-pretitle">
+                            预测
+                        </div>
+                        <h2 class="page-title">
+                            疫情预测
+                        </h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row row-deck row-cards">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">请选择想预测的国家及地区</h3>
+                        </div>
+                        <div class="card-body">
+                            <form action="" method="post">
+                                <div class="form-group mb-3 row">
+                                    <label class="form-label col-3 col-form-label">选择国家</label>
+                                    <div class="col">
+                                        <select id="country" class="form-select" name="country"
+                                                onchange="setSelectCountry()">
+                                            <option value="0"disabled selected>--请选择国家名称--</option>
+                                            <option th:each="country:${countrys}"
+                                                    th:value="${country}" th:text="${country}">选项2
+                                            </option>
+                                        </select>
+
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3 row">
+                                    <label class="form-label col-3 col-form-label">选择省份/州</label>
+                                    <div class="col">
+                                        <select id="province" class="form-select" name="province">
+                                            <option value="0" disabled selected id="provice_op">--请选择省份/州名称--</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3 row">
+                                    <label class="form-label col-3 col-form-label">预测的内容</label>
+                                    <div class="col">
+                                        <select id="type" class="form-select" name="type">
+                                            <option value="0" disabled selected>--请选择预测的内容--</option>
+                                            <option value="confirmed">确诊人数</option>
+                                            <option value="deaths">死亡人数</option>
+                                            <option value="recovered">治愈人数</option>
+                                            <option value="all">综合预测</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-footer">
+                                    <button type="submit" class="btn btn-primary">进行预测</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer th:replace="fragments :: footer"></footer>
+    </div>
+</div>
+<th:block th:replace="fragments :: script">
+</th:block>
+<script>
+    function setSelectCountry() {
+        var country = $('#country option:selected').text();
+        $.ajax({
+            url: '/api/getprovincesbycountry?country='+country,
+            type: 'get',
+            dataType: "json",
+            success: function (res) {
+                if (res[0]==null){
+                    $('#provice_op').text("无");
+                }else{
+                    // $('#province_op').remove()
+                    $('#province').append("<option value='sum'>全国</option>")
+                    for(i=0;i<res.length;i++){
+                        $('#province').append("<option value='"+res[i]+"'>"+res[i]+"</option>")
+                    }
+                }
+            }
+        })
+    }
+</script>
+</body>
+</html>

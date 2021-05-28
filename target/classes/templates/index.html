@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: head(~{::title})">
+    <title>疫情现状</title>
+</head>
+<body class="antialiased">
+<div class="page">
+    <header th:replace="fragments :: header(1)"></header>
+
+    <div class="content">
+        <div class="container-xl">
+            <!-- Page title -->
+            <div class="page-header d-print-none">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <!-- Page pre-title -->
+                        <div class="page-pretitle">
+                            预览
+                        </div>
+                        <h2 class="page-title">
+                            疫情现状
+                        </h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row row-deck row-cards">
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">国内确诊地图</h3>
+                        </div>
+                        <iframe src="https://www.lovestu.com/api/project/cnmapyinqing/obj.php" height="500"
+                                frameborder="no" border="0" width="100%"></iframe>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">国外确诊地图</h3>
+                        </div>
+                        <iframe src="https://www.lovestu.com/api/project/cnmapyinqing/obj.php" height="500"
+                                frameborder="no" border="0" width="100%"></iframe>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">确诊图表</h3>
+                        </div>
+                        <div class="card-body border-bottom py-3">
+                            <div class="d-flex">
+                                <div class="text-muted">
+                                    仅显示前10国家（以总确诊数排序），更多详情请移步更多详情页面
+                                </div>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table card-table table-vcenter text-nowrap datatable">
+                                <thead>
+                                <tr>
+                                    <th class="w-1">No.</th>
+                                    <th>国家</th>
+                                    <th>累计确诊</th>
+                                    <th>累计死亡</th>
+                                    <th>累计治愈</th>
+                                </tr>
+                                </thead>
+                                <tbody id="table_result">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer th:replace="fragments :: footer"></footer>
+    </div>
+</div>
+<th:block th:replace="fragments :: script">
+</th:block>
+<script th:inline="javascript">
+    datas = JSON.parse([[${datas}]]);
+    for (i = 1; i <= datas.length; i++) {
+        sum=i-1
+        $("#table_result").append("<tr><td>" + i + "</td><td>" + datas[sum][0] + "</td><td className='text-muted'>" + datas[sum][1] + "</td><td className='text-muted'>" + datas[sum][2] + "</td><td className='text-muted'>" + datas[sum][3] + "</td></tr>")
+    }
+</script>
+</body>
+</html>

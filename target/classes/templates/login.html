@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: head(~{::title})">
+    <title>登录</title>
+</head>
+<body class="antialiased border-top-wide border-primary d-flex flex-column">
+<div class="flex-fill d-flex flex-column justify-content-center py-4">
+    <div class="container-tight py-6">
+        <div class="text-center mb-4">
+            <a href=""><img src="../phos/logo.jpg" height="36" alt="" th:src="@{/phos/logo.jpg}"></a>
+        </div>
+        <form class="card card-md" action="" method="post" autocomplete="off">
+            <div class="card-body">
+                <h2 class="card-title text-center mb-4">登录账户</h2>
+                <div class="mb-3">
+                    <label class="form-label">用户名</label>
+                    <input type="text" class="form-control" placeholder="输入用户名" name="username">
+                </div>
+                <div class="mb-2">
+                    <label class="form-label">
+                        密码
+                        <span class="form-label-description">
+                  <a href="./forgot-password.html">忘记密码</a>
+                </span>
+                    </label>
+                    <div class="input-group input-group-flat">
+                        <input type="password" class="form-control" placeholder="输入密码" autocomplete="off" name="password">
+                        <span class="input-group-text">
+                  <a href="#" class="link-secondary" title="" data-bs-toggle="tooltip" data-bs-original-title="Show password"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><circle cx="12" cy="12" r="2"></circle><path d="M22 12c-2.667 4.667 -6 7 -10 7s-7.333 -2.333 -10 -7c2.667 -4.667 6 -7 10 -7s7.333 2.333 10 7"></path></svg>
+                  </a>
+                </span>
+                    </div>
+                </div>
+                <div class="mb-2">
+                    <label class="form-check">
+                        <input type="checkbox" class="form-check-input" name="remember">
+                        <span class="form-check-label">记住登录</span>
+                    </label>
+                </div>
+                <div class="mb-2">
+                    <!--/*@thymesVar id="msg" type="string"*/-->
+                    <span class="form-check-label" style="color: red" th:text="${msg}"></span>
+                </div>
+                <div class="form-footer">
+                    <button type="submit" class="btn btn-primary w-100">登录</button>
+                </div>
+            </div>
+        </form>
+        <div class="text-center text-muted mt-3">
+            还没有账户？ <a href="./register.html" tabindex="-1" th:href="@{/user/register}">注册一个</a>
+        </div>
+    </div>
+</div>
+<th:block th:replace="fragments :: script">
+</th:block>
+</body>
+</html>

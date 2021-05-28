@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: head(~{::title})">
+    <title>疫情预测结果展示</title>
+</head>
+<body class="antialiased">
+<div class="page">
+    <header th:replace="fragments :: header(3)"></header>
+    <div class="content">
+        <div class="container-xl">
+            <!-- Page title -->
+            <div class="page-header d-print-none">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <!-- Page pre-title -->
+                        <div class="page-pretitle">
+                            疫情预测结果展示
+                        </div>
+                        <h2 class="page-title">
+                            当前所选国家：<span th:text="${country}">暂无</span>
+                        </h2>
+                        <h2 class="page-title">
+                            所选地区：<span th:text="${province}">暂无</span>
+                        </h2>
+                        <h2 class="page-title">
+                            所选预测类型：<span th:text="${type}">综合</span>
+                        </h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row row-cards">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex">
+                                <h3 class="card-title">确诊预测结果展示表</h3>
+                            </div>
+                            <div id="chart-social-referrals"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">算法精确度RMSE(均方根误差)</h3>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-vcenter card-table">
+                                <thead>
+                                <tr>
+                                    <th>LSTM时间序列</th>
+                                    <th>支持向量回归</th>
+                                    <th>多元线性回归</th>
+                                    <th>多项式回归</th>
+                                </tr>
+                                </thead>
+                                <tbody id="table_result2">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">确诊预测结果展示表(未来3天)</h3>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-vcenter card-table">
+                                <thead>
+                                <tr>
+                                    <th>No.</th>
+                                    <th>日期</th>
+                                    <th>LSTM时间序列预测</th>
+                                    <th>支持向量回归预测</th>
+                                    <th>多元线性回归预测</th>
+                                    <th>多项式回归预测</th>
+                                </tr>
+                                </thead>
+                                <tbody id="table_result">
+                                <!--                                <tr>-->
+                                <!--                                    <td>1</td>-->
+                                <!--                                    <td>1/22</td>-->
+                                <!--                                    <td class="text-muted">-->
+                                <!--                                        938-->
+                                <!--                                    </td>-->
+                                <!--                                    <td class="text-muted">-->
+                                <!--                                        938-->
+                                <!--                                    </td>-->
+                                <!--                                </tr>-->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <footer th:replace="fragments :: footer"></footer>
+        </div>
+    </div>
+</div>
+<th:block th:replace="fragments :: script">
+</th:block>
+<script src="../static/js/apexcharts.min.js" th:src="@{/js/apexcharts.min.js}"></script>
+<script th:inline="javascript">
+    datas1 = JSON.parse([[${datas}]]);
+    confirmed_data = datas1['confirmed_data']
+    lstm_data = datas1['lstm_data']
+    svm_data = datas1['svm_data']
+    linear_data = datas1['liner_data']
+    linear2_data = datas1['linear2_data']
+    date = datas1['dates']
+    RMSE = datas1['RMSE_data']
+    // @formatter:off
+    document.addEventListener("DOMContentLoaded", function () {
+        window.ApexCharts && (new ApexCharts(document.getElementById('chart-social-referrals'), {
+            chart: {
+                type: "line",
+                fontFamily: 'inherit',
+                height: 192,
+                parentHeightOffset: 0,
+                toolbar: {
+                    show: false,
+                },
+                animations: {
+                    enabled: false
+                },
+            },
+            fill: {
+                opacity: 1,
+            },
+            stroke: {
+                width: 2,
+                lineCap: "round",
+                curve: "smooth",
+            },
+            series: [{
+                name: "真实确诊",
+                data: confirmed_data
+            }, {
+                name: "LSTM时间序列",
+                data: lstm_data
+            }, {
+                name: "支持向量回归",
+                data: svm_data
+            }, {
+                name: "多元线性回归",
+                data: linear_data
+            }, {
+                name: "多项式回归",
+                data: linear2_data
+            }],
+            grid: {
+                padding: {
+                    top: -20,
+                    right: 0,
+                    left: -4,
+                    bottom: -4
+                },
+                strokeDashArray: 4,
+                xaxis: {
+                    lines: {
+                        show: true
+                    }
+                },
+            },
+            xaxis: {
+                labels: {
+                    padding: 0
+                },
+                tooltip: {
+                    enabled: false
+                },
+                type: 'datetime',
+            },
+            yaxis: {
+                labels: {
+                    padding: 4
+                },
+            },
+            labels: date,
+            colors: ["#5eba00", '#87CEFA', "#ff922b", "#2069bf", "#BA0085"],
+            legend: {
+                show: true,
+                position: 'bottom',
+                height: 32,
+                offsetY: 8,
+                markers: {
+                    width: 8,
+                    height: 8,
+                    radius: 100,
+                },
+                itemMargin: {
+                    horizontal: 8,
+                },
+            },
+        })).render();
+    });
+    // @formatter:on
+    sum = date.length
+    for (i = 1; i <= 3; i++) {
+        sum -= 1
+        $("#table_result").append("<tr><td>" + i + "</td><td>" + date[sum] + "</td><td className='text-muted'>" + lstm_data[sum] + "</td><td className='text-muted'>" + svm_data[sum] + "</td><td className='text-muted'>" + linear_data[sum] + "</td><td className='text-muted'>" + linear2_data[sum] + "</td></tr>")
+    }
+    $('#table_result2').append('<tr><td>' + RMSE[0] + '</td><td>' + RMSE[3] + '</td><td>' + RMSE[2] + '<td>' + RMSE[1] + '</td></tr>')
+</script>
+</body>
+</html>

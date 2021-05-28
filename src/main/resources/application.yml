@@ -1,0 +1,24 @@
+spring:
+  datasource:
+#    url: jdbc:mysql://8.131.63.235:6666/zph_bs?useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3305/zph_bs?useSSL=false&serverTimezone=UTC
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 520xy1314
+
+  devtools:
+    restart:
+      enabled: true
+      additional-paths: src/main/java #重启目录
+      exclude: WEB-INF/**
+  freemarker:
+    cache: false
+#  rabbitmq:
+#    username: admin
+#    password: LOVExy1314
+#    virtual-host: /
+#    host: 8.131.63.235
+#    port: 5672
+mybatis:
+  type-aliases-package: imnu.edu.pojo
+  mapper-locations: classpath:mapper/*.xml

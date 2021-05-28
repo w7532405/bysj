@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: head(~{::title})">
+    <title>注册</title>
+</head>
+<body class="antialiased border-top-wide border-primary d-flex flex-column">
+<div class="flex-fill d-flex flex-column justify-content-center py-4">
+    <div class="container-tight py-6">
+        <div class="text-center mb-4">
+            <a href=""><img src="../static/phos/logo.jpg" height="36" alt="" th:src="@{/phos/logo.jpg}"></a>
+        </div>
+        <form class="card card-md" action="" method="post">
+            <div class="card-body">
+                <h2 class="card-title text-center mb-4">建立新的账户</h2>
+                <div class="mb-3">
+                    <label class="form-label">用户名</label>
+                    <input type="text" name="username" class="form-control" placeholder="请输入用户名">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">真实姓名</label>
+                    <input type="text" name="nickname" class="form-control" placeholder="请输入真实姓名">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">邮箱</label>
+                    <input type="email" name="email" class="form-control" placeholder="请输入真实邮箱">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">密码</label>
+                    <input type="password" name="password1" class="form-control" placeholder="请输入密码">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">再次输入密码</label>
+                    <input type="password" name="password2" class="form-control" placeholder="请再次输入密码">
+                </div>
+                <div class="mb-3">
+                    <label class="form-check">
+                        <input type="checkbox" class="form-check-input">
+                        <span class="form-check-label">同意 <a href="" tabindex="-1">相关条款</a></span>
+                    </label>
+                </div>
+                <div class="mb-3">
+                    <span class="form-check-label" th:text="${msg}" style="color: red"></span>
+                </div>
+                <div class="form-footer">
+                    <button type="submit" class="btn btn-primary w-100">建立新的账户</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="text-center text-muted mt-3">
+        已有账户？ <a href="./login.html" tabindex="-1" th:href="@{/user/login}">登录</a>
+    </div>
+</div>
+</div>
+<th:block th:replace="fragments :: script">
+</th:block>
+</body>
+</html>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="imnu.edu.dao.PredictDao">
+    <select id="getAllCountrys" resultType="java.lang.String">
+        select distinct `Country/Region`
+        from country_province;
+    </select>
+
+    <select id="getProvincesByCountry" resultType="java.lang.String">
+        select distinct `Province/State`
+        from country_province
+        where `Country/Region` = #{country};
+    </select>
+</mapper>
